@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f5f6f1">
+	<title>Welcome to Fieldwork</title>
+	<style>
+		:root {
+			color-scheme: light;
+			--ink: #252a25;
+			--muted: #72796f;
+			--line: #e3e7df;
+			--surface: #fff;
+			--canvas: #f5f6f1;
+			--forest: #294c39;
+			--leaf: #d8ee89;
+			font-family: "DM Sans", sans-serif;
+			color: var(--ink);
+			background: var(--canvas);
+		}
+		* { box-sizing: border-box; }
+		body { margin: 0; min-width: 320px; min-height: 100vh; }
+		button { font: inherit; cursor: pointer; }
+		.topbar { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 max(5vw, calc((100vw - 1180px) / 2)); border-bottom: 1px solid var(--line); background: var(--surface); }
+		.brand { display: flex; align-items: center; gap: 10px; font-family: "Manrope", sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 0; }
+		.brand-mark { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: var(--forest); color: var(--leaf); font-size: 17px; }
+		.top-right { display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: 12px; }
+		.user-chip { display: flex; align-items: center; gap: 9px; color: var(--ink); font-weight: 600; }
+		.user-avatar { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 50%; background: #f5d9c8; color: #6c4430; font-size: 11px; font-weight: 700; }
+		main { width: min(1120px, 90vw); margin: 0 auto; padding: 42px 0 68px; }
+		.eyebrow { margin: 0 0 9px; color: var(--forest); font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+		h1, h2, h3, p { margin-top: 0; }
+		h1 { margin-bottom: 9px; font-family: "Manrope", sans-serif; font-size: clamp(28px, 3.2vw, 38px); font-weight: 700; line-height: 1.17; }
+		.welcome-copy { max-width: 560px; margin-bottom: 29px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+		.offer { max-width: 660px; margin: 36px auto; padding: 30px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+		.offer-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+		.offer-heading h2 { margin-bottom: 4px; font-family: "Manrope", sans-serif; font-size: 19px; }
+		.offer-heading p { margin-bottom: 0; color: var(--muted); font-size: 12px; }
+		.status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 20px; background: #f7eddb; color: #89632d; font-size: 10px; font-weight: 700; white-space: nowrap; }
+		.status-pill::before { width: 6px; height: 6px; border-radius: 50%; background: #d39b42; content: ""; }
+		.status-pill.accepted { background: #e9f2df; color: #3f6b3d; }
+		.status-pill.accepted::before { background: #66a353; }
+		.offer-facts { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+		.fact { padding: 17px 12px 17px 0; }
+		.fact:nth-child(even) { padding-left: 18px; border-left: 1px solid var(--line); }
+		.fact:nth-child(n+3) { border-top: 1px solid var(--line); }
+		.fact-label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 10px; font-weight: 600; }
+		.fact-value { font-family: "Manrope", sans-serif; font-size: 14px; font-weight: 700; }
+		.offer-note { margin: 21px 0 18px; color: #555d53; font-size: 12px; line-height: 1.7; }
+		.accept-title { margin-bottom: 6px; font-family: "Manrope", sans-serif; font-size: 15px; }
+		.accept-copy { margin-bottom: 18px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+		.button-row { display: flex; gap: 10px; }
+		.accept-button, .decline-button { min-height: 42px; border-radius: 5px; font-size: 11px; font-weight: 700; transition: background .16s, transform .16s; }
+		.accept-button { flex: 1; border: 1px solid var(--forest); background: var(--forest); color: white; }
+		.accept-button:hover:not(:disabled) { transform: translateY(-1px); background: #355d47; }
+		.accept-button:disabled, .decline-button:disabled { cursor: not-allowed; opacity: .55; }
+		.decline-button { padding: 0 14px; border: 1px solid var(--line); background: white; color: #5d6259; }
+		.decline-button:hover { background: #f5f6f1; }
+		.response-note { min-height: 17px; margin: 9px 0 0; color: var(--forest); font-size: 11px; }
+		button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #92a965; outline-offset: 3px; }
+		@media (max-width: 760px) {
+			.topbar { padding: 0 5vw; }
+			.top-right { gap: 12px; }
+			main { width: 90vw; padding-top: 33px; }
+			.offer { margin-top: 24px; padding: 22px; }
+		}
+		@media (max-width: 460px) {
+			.topbar { height: 60px; }
+			main { width: 92vw; padding-top: 27px; }
+			.offer-heading { flex-direction: column; }
+			.fact-value { font-size: 12px; }
+		}
+		@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+	</style>
+</head>
+<body>
+	<header class="topbar">
+		<div class="brand"><span class="brand-mark" aria-hidden="true">f</span> fieldwork</div>
+		<div class="top-right"><span class="user-chip"><span class="user-avatar" aria-hidden="true">JM</span> Jordan Miller</span></div>
+	</header>
+
+	<main id="home">
+		<p class="eyebrow">Candidate portal</p>
+		<h1>Your offer from Fieldwork</h1>
+		<p class="welcome-copy">Review the details below and choose your response.</p>
+
+		<section class="offer" aria-labelledby="offer-title">
+				<div class="offer-heading">
+					<div><h2 id="offer-title">Your offer</h2><p>Prepared for Jordan Miller · September 18, 2026</p></div>
+					<span class="status-pill" id="offer-status">Awaiting your response</span>
+				</div>
+				<div class="offer-facts">
+					<div class="fact"><span class="fact-label">Position</span><span class="fact-value">Product Designer</span></div>
+					<div class="fact"><span class="fact-label">Annual salary</span><span class="fact-value">$118,000 USD</span></div>
+					<div class="fact"><span class="fact-label">Start date</span><span class="fact-value">October 19, 2026</span></div>
+					<div class="fact"><span class="fact-label">Work location</span><span class="fact-value">Brooklyn, NY · Hybrid</span></div>
+				</div>
+				<p class="offer-note">You’ll work with our Product team to make everyday tools feel more human. Your offer includes health coverage, a retirement plan with company match, and a flexible annual learning budget.</p>
+				<h3 class="accept-title">Your response</h3>
+				<p class="accept-copy">This demo saves your choice in this browser only.</p>
+				<div class="button-row">
+					<button class="accept-button" id="accept-offer" type="button">Accept offer</button>
+					<button class="decline-button" id="decline-offer" type="button">Decline</button>
+				</div>
+				<p class="response-note" id="response-note" role="status" aria-live="polite"></p>
+		</section>
+	</main>
+
+	<script>
+		const storageKey = "fieldwork-offer-response";
+		const offerStatus = document.querySelector("#offer-status");
+		const responseNote = document.querySelector("#response-note");
+		const acceptButton = document.querySelector("#accept-offer");
+		const declineButton = document.querySelector("#decline-offer");
+		let savedResponse = "";
+
+		try {
+			savedResponse = localStorage.getItem(storageKey) || "";
+		} catch {
+			responseNote.textContent = "Your choice will last until this page is closed.";
+		}
+
+		function showResponse(response) {
+			const accepted = response === "accepted";
+			offerStatus.textContent = accepted ? "Offer accepted" : "Offer declined";
+			offerStatus.classList.toggle("accepted", accepted);
+			acceptButton.textContent = accepted ? "Accepted" : "Accept offer";
+			declineButton.textContent = accepted ? "Decline" : "Declined";
+			acceptButton.disabled = true;
+			declineButton.disabled = true;
+			responseNote.textContent = accepted ? "Your acceptance is recorded." : "Your decision is recorded.";
+		}
+
+		function saveResponse(response) {
+			if (savedResponse) return;
+			savedResponse = response;
+			try {
+				localStorage.setItem(storageKey, response);
+			} catch {
+				responseNote.textContent = "Your choice is recorded for this page only.";
+			}
+			showResponse(response);
+		}
+
+		acceptButton.addEventListener("click", () => saveResponse("accepted"));
+		declineButton.addEventListener("click", () => saveResponse("declined"));
+
+		if (savedResponse === "accepted" || savedResponse === "declined") {
+			showResponse(savedResponse);
+		}
+	</script>
+</body>
+</html>
